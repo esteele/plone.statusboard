@@ -4,6 +4,27 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 	<script type="text/javascript">
 
+		jQuery(function($){
+			$.ajax({
+				url: "/open-pulls",
+				success: function(data){
+					console.log('woo');
+					$('.pull-requests').html(data);
+				},
+			});
+
+			$.ajax({
+				url: "/jenkins-status",
+				success: function(data){
+					console.log('woo');
+					$('.jenkins-status').html(data);
+				},
+			});
+
+
+
+		});
+
 	</script>
 </head>
 <body>
