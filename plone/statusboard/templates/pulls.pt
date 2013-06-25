@@ -1,1 +1,4 @@
-pulls
+<h2>Open Pull Requests:</h2>
+<div tal:attributes="data-history days_old">
+	<a href="https://github.com/organizations/plone/dashboard/pulls/public" tal:content="value"></a>
+</div>

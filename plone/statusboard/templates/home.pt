@@ -1,28 +1,67 @@
 <html>
 <head>
-	
+	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/flot/0.8/jquery.flot.min.js"></script>
+
 	<script type="text/javascript">
 
 		jQuery(function($){
-			$.ajax({
-				url: "/open-pulls",
-				success: function(data){
-					console.log('woo');
-					$('.pull-requests').html(data);
-				},
-			});
 
-			$.ajax({
-				url: "/jenkins-status",
-				success: function(data){
-					console.log('woo');
-					$('.jenkins-status').html(data);
-				},
-			});
+			$.prototype.showSpinner = function(text){
+			  // Display spinner
+			  text = typeof text !== 'undefined' ? text : 'Loading Content...';
+			  $(this).prepend('<div class="spinner"><i class="icon-spinner icon-spin icon-large"></i>' + text + '</div>');
+			  $(this).find('.spinner').fadeTo('fast', 0.75);
+			};
 
+			$.prototype.hideSpinner = function() {
+			  // Remove spinner
+			  $(this).find('.spinner').fadeOut('fast', function(){
+			    $(this).remove();
+			  });
+			};
 
+			function loadPullRequests() {
+				console.log('loading pull requests');
+				$('.pull-requests').showSpinner();
+				$.ajax({
+					url: "/open-pulls",
+					success: function(data){
+						$('.pull-requests').html(data);
+				        setTimeout("loadPullRequests()", 5 * 1000 * 60);
+					},
+				});					
+			}
 
+			function loadJenkinsStatus() {
+				$('.jenkins-status').showSpinner();
+				$.ajax({
+					url: "/jenkins-status",
+					success: function(data){
+						console.log('woo');
+						$('.jenkins-status').html(data);
+				        setTimeout("loadJenkinsStatus()", 5 * 1000 * 60);
+					},
+				});
+			}
+
+			function loadListActivity() {
+				$('.list-activity').showSpinner();
+				$.ajax({
+					url: "/list-activity",
+					success: function(data){
+						console.log('woo');
+						$('.jenkins-status').html(data);
+				        setTimeout("loadListActivity()", 5 * 1000 * 60);
+					},
+				});
+			}
+
+			loadPullRequests();
+			loadJenkinsStatus();
+			loadListActivity();
 		});
 
 	</script>
@@ -31,6 +70,7 @@
 
 <div class="pull-requests"></div>
 <div class="jenkins-status"></div>
+<div class="list-activity"></div>
 
 </body>
 </html>

@@ -17,6 +17,7 @@ def main(global_config, **settings):
     config.add_route('home', '/')
     config.add_route('open_pulls', '/open-pulls')
     config.add_route('jenkins_status', '/jenkins-status')
+    config.add_route('list_activity', '/list-activity')
 
     config.scan("plone.statusboard.views")
 
